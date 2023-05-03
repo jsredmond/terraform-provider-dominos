@@ -272,3 +272,23 @@ func resourceOrderDelete(d *schema.ResourceData, m interface{}) error {
 	d.SetId("")
 	return nil
 }
+
+func getMenuApiObject(url string, client *http.Client) (map[string]interface{}, error) {
+	resp, err := client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch menu API object: %s", resp.Status)
+	}
+
+	var menuApiObject map[string]interface{}
+	err = json.NewDecoder(resp.Body).Decode(&menuApiObject)
+	if err != nil {
+		return nil, err
+	}
+
+	return menuApiObject, nil
+}
