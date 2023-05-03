@@ -176,7 +176,10 @@ func resourceOrderCreate(d *schema.ResourceData, m interface{}) error {
 	if err != nil {
 		return err
 	}
-	orderid := order_response_obj["Order"].(map[string]interface{})["StoreOrderID"]
+	orderid, ok := order_response_obj["Order"].(map[string]interface{})["StoreOrderID"]
+	if !ok {
+		return fmt.Errorf("StoreOrderID not found in order response")
+	}
 	log.Printf("[DEBUG] order_data: %#v", order_data)
 	d.SetId(orderid.(string))
 	return resourceOrderRead(d, m)
