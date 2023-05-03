@@ -3,8 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 func dataSourceAddress() *schema.Resource {
@@ -45,15 +46,16 @@ func dataSourceAddress() *schema.Resource {
 
 func resourceAddressRead(d *schema.ResourceData, m interface{}) error {
 	d.SetId("address")
+	zipCode := fmt.Sprintf("%05s", d.Get("zip").(string))
 	urlobj := map[string]string{
 		"line1": d.Get("street").(string),
-		"line2": fmt.Sprintf("%s, %s %s", d.Get("city").(string), d.Get("state").(string), d.Get("zip").(string)),
+		"line2": fmt.Sprintf("%s, %s %s", d.Get("city").(string), d.Get("state").(string), zipCode),
 	}
 	apiobj := map[string]string{
 		"Street":     d.Get("street").(string),
 		"City":       d.Get("city").(string),
 		"Region":     d.Get("state").(string),
-		"PostalCode": d.Get("zip").(string),
+		"PostalCode": zipCode,
 		"Type":       "House",
 	}
 	url_json, err := json.Marshal(urlobj)
