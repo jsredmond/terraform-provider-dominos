@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/hashicorp/terraform/helper/schema"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 func resourceOrder() *schema.Resource {
@@ -63,7 +64,7 @@ func resourceOrderCreate(d *schema.ResourceData, m interface{}) error {
 		"Products":              []map[string]interface{}{},
 		"Market":                "",
 		"Currency":              "",
-		"ServiceMethod":         "Delivery",
+		"ServiceMethod":         "Carryout",
 		"Tags":                  map[string]string{},
 		"Version":               "1.0",
 		"SourceOrganizationURI": "order.dominos.com",
